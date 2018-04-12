@@ -107,12 +107,13 @@ def main():
 
     job_queue = updater.job_queue
 
+    # Periodically save jobs
+    job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
+
     try:
         load_jobs(job_queue)
     except FileNotFoundError:
         # First run
-        # Periodically save jobs
-        job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
         pass
 
     # Handlers
