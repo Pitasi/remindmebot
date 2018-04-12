@@ -40,12 +40,16 @@ def load_jobs(jq):
 
             next_t -= now  # Convert from absolute to relative time
 
+            job._queue = jq
             jq._put(job, next_t)
             count += 1
     logger.info("[pickle] Loaded {} jobs".format(count))
 
 
 def save_jobs(jq):
+    if jq is None:
+        return
+
     logger.info("[pickle] Saving jobs to file...")
     job_tuples = jq._queue.queue
 
@@ -103,13 +107,12 @@ def main():
 
     job_queue = updater.job_queue
 
-    # Periodically save jobs
-    job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
-
     try:
         load_jobs(job_queue)
     except FileNotFoundError:
         # First run
+        # Periodically save jobs
+        job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
         pass
 
     # Handlers
