@@ -11,7 +11,11 @@ from datetime import timedelta
 from src.remind_command import remind
 from fixtures.replies import HELP_TEXT
 
-JOBS_PICKLE = 'jobs.pickle'
+
+# Get config from env. variables
+TOKEN = environ.get('TOKEN')
+WEBHOOK_URL = environ.get('WEBHOOK_URL')
+JOBS_PICKLE = environ.get('STORAGE_PATH', 'storage/jobs.pickle')
 
 
 def load_jobs(jq):
@@ -80,10 +84,6 @@ def save_jobs(jq):
 def save_jobs_job(bot, job):
     save_jobs(job.job_queue)
 
-
-# Get config from env. variables
-TOKEN = environ.get('TOKEN')
-WEBHOOK_URL = environ.get('WEBHOOK_URL')
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
