@@ -5,7 +5,7 @@ EXPOSE 443
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN pip install python-telegram-bot parsedatetime
+RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
 
